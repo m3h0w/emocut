@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Emocut",
+    "name": "Emoticut",
     "description": "Replaces text triggers with emojis (e.g. <sun> with ☀️)",
     "version": "1.0",
     "background": {
@@ -11,13 +11,13 @@
     },
     "permissions": [
         "http://*/*",
+        "https://*/*",
         "tabs"
     ],
     "content_scripts": [
         {
             "matches": [
-                "http://*/*",
-                "https://*/*"
+                "<all_urls>"
             ],
             "js": [
                 "content.js"
