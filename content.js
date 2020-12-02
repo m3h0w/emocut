@@ -272,8 +272,15 @@ const onKeyDown = (e) => {
       console.log(getCurrentSelection().baseNode);
       console.log(getCurrentSelection().baseNode.parentNode);
 
-      if (getCurrentSelection().baseNode.parentNode) {
-        targetElement = getCurrentSelection().baseNode.parentNode;
+      const currentSelectioNode = getCurrentSelection().baseNode;
+      if (currentSelectioNode) {
+        if (currentSelectioNode.nodeType !== Node.TEXT_NODE) {
+          targetElement = currentSelectioNode;
+        } else {
+          if (currentSelectioNode.parentNode) {
+            targetElement = currentSelectioNode.parentNode;
+          }
+        }
       } else {
         deepestChild = findDeepestChild(targetElement).parent;
         console.log({ targetElement }, { deepestChild }, `equal? ${targetElement === deepestChild}`);
@@ -372,15 +379,7 @@ function doKeyPress(e) {
 
   if (e.altKey && e.key.toLowerCase() === trigger_key.toLowerCase()) {
     console.log('ENGAGING');
-    clickEmojiElement();
-    setTimeout(() => {
-      const success = clickCategoriesAndCloseEmoji();
-      if (!success) {
-        setTimeout(() => {
-          clickCategoriesAndCloseEmoji();
-        }, 5000);
-      }
-    }, 5000);
+    console.log(getCurrentSelection());
   }
 
   if (e.ctrlKey && e.key.toLowerCase() === trigger_key.toLowerCase()) {
