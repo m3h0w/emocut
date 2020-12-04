@@ -75,3 +75,63 @@ function getCaretCharacterOffsetWithin(element) {
   }
   return caretOffset;
 }
+
+function saveSetting(name, value) {
+  chrome.storage.sync.set({ [name]: value });
+}
+
+function removeSetting(name) {
+  chrome.storage.sync.remove(name);
+}
+
+function getSetting(name, callback) {
+  chrome.storage.sync.get(name, function (data) {
+    callback(data[name]);
+  });
+}
+
+const EMOJI_SETTINGS = 'emojis';
+
+async function initializeEmojiSettings() {
+  saveSetting(EMOJI_SETTINGS, {});
+}
+
+async function getEmojis() {
+  return new Promise((resolve, reject) => {
+    getSetting(EMOJI_SETTINGS, function (val) {
+      resolve(val);
+    });
+  });
+}
+
+async function getEmoji(id) {
+  return new Promise((resolve, reject) => {
+    getSetting(EMOJI_SETTINGS, function (val) {
+      if (!val) {
+        initializeEmojiSettings();
+      }
+      if (val) {
+        resolve(val[id]);
+      }
+    });
+  });
+}
+
+async function saveEmoji(id, short, emoji) {
+  const emojis = await getEmojis();
+  console.log('emojis', emojis, short, emoji);
+  const newSettings = {
+    ...emojis,
+    [id]: {
+      short,
+      emoji,
+    },
+  };
+  console.log('newsettings', newSettings);
+  saveSetting(EMOJI_SETTINGS, newSettings);
+}
+
+async function clearEmojis() {
+  console.log('CLEARING STORAGE');
+  removeSetting(EMOJI_SETTINGS);
+}

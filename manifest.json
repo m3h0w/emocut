@@ -12,7 +12,8 @@
     "permissions": [
         "http://*/*",
         "https://*/*",
-        "tabs"
+        "tabs",
+        "storage"
     ],
     "content_scripts": [
         {
@@ -31,5 +32,9 @@
         "32": "emocut.png",
         "48": "emocut.png",
         "128": "emocut.png"
+    },
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_icon": "emocut.png"
     }
 }
